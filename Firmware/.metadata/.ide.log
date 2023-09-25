@@ -845,3 +845,14 @@
 2023-09-26 00:46:14,940 [INFO] ProjectBuilder:2935 - Time for Copy CMSIS : 1mS.
 2023-09-26 00:46:14,947 [INFO] ProjectBuilder:2935 - Time for Copy CMSIS : 0mS.
 2023-09-26 00:48:10,463 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2023-09-26 01:02:17,668 [INFO] Activator:177 - 
+
+
+2023-09-26 01:02:17,669 [INFO] Activator:178 - !SESSION log4j initialized
+2023-09-26 01:03:11,457 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+2023-09-26 01:03:11,458 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: Defaulting to no-operation (NOP) logger implementation
+2023-09-26 01:03:11,459 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+2023-09-26 01:05:19,623 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Option com.st.stm32cube.ide.mcu.debug.option.cpuclock.197356121 uses a null category that is invalid in its context. The option was ignored.
+2023-09-26 01:05:19,703 [ERROR] LogOutputStream:74 - [STDERR_REDIRECT] Managed Build system manifest file error: Option com.st.stm32cube.ide.mcu.debug.option.cpuclock.236277966 uses a null category that is invalid in its context. The option was ignored.
+2023-09-26 01:05:25,936 [ERROR] ApiDbMcu:1619 - Can't use Application install path:
+2023-09-26 01:05:28,660 [WARN] RulesReader:63 - Compatibility file://mcu/compatibility.xml not found
