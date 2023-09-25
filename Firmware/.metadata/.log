@@ -1,0 +1,18 @@
+!SESSION 2023-09-26 00:31:04.349 -----------------------------------------------
+eclipse.buildId=Version 1.13.2
+java.version=17.0.6
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=ja_JP
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\data\Tsemi\2023\InvertedPendulum\Yoshi_InvertedPendulum\Firmware
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-09-26 00:31:22.411
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-09-26 00:31:22.430
+!MESSAGE Log4j2 initialized with config file C:\data\Tsemi\2023\InvertedPendulum\Yoshi_InvertedPendulum\Firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-09-26 00:31:27.730
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-09-26 00:34:18.547
+!MESSAGE Indexed 'InvertedPendulum' (27 sources, 89 headers) in 7.55 sec: 8,382 declarations; 63,134 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0028%)
