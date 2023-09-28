@@ -30,4 +30,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Core/BNO055_driver-master</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/Drivers/BNO055_driver-master</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
