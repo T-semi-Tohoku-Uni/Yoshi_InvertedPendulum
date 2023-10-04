@@ -32,6 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define BNO_ADDRESS 0x28
 
 /* USER CODE END PD */
 
@@ -77,6 +78,7 @@ int _write(int file, char *ptr, int len)
 	return len;
 }
 
+
 int16_t read_encoder_value(TIM_TypeDef *TIM)
 {
 	uint16_t enc_buff = TIM->CNT;
@@ -84,6 +86,32 @@ int16_t read_encoder_value(TIM_TypeDef *TIM)
 	return (int16_t)enc_buff;
 }
 
+
+void BNO055_Init(){
+	HAL_Delay(700);
+	uint8_t Txbuff;
+	//uint8_t Rxbuff;
+	//char message[20];
+
+
+
+	//Txbuff = 0x20;
+	//HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
+
+	Txbuff = 0x00;
+	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3E, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //power mode
+
+	Txbuff = 0x0C;
+	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3D, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100);//using Nine Degree of Freedom mode
+
+
+
+
+	//print_int(30, "testing");
+	HAL_Delay(100);
+
+
+}
 /* USER CODE END 0 */
 
 /**
@@ -125,6 +153,11 @@ int main(void)
 
   HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+
+  uint8_t Rxbuffer[6];
+  float euler[3];
+  char eulerheader[3][10] = {"x", "y", "z"};
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -134,6 +167,14 @@ int main(void)
 	  printf("Right:%d\r\n",read_encoder_value(TIM2));
 	  printf("Left :%d\r\n",read_encoder_value(TIM3));
 	  HAL_Delay(200);
+
+	  HAL_I2C_Mem_Read(&hi2c1, BNO_ADDRESS << 1, 0x1A, I2C_MEMADD_SIZE_8BIT, Rxbuffer, 6, 100);
+
+	  for(uint8_t i=0; i<3; i++){
+		  euler[i] = (float)((Rxbuffer[i*2+1] << 8) | Rxbuffer[i*2])/16;
+		  printf("%s:%f", eulerheader[i],euler[i]);
+
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -342,7 +383,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 79;
+  htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
