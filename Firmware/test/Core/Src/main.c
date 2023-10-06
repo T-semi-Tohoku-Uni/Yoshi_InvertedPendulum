@@ -79,7 +79,7 @@ int _write(int file, char *ptr, int len)
 }
 
 
-int16_t read_encoder_value(TIM_TypeDef *TIM)
+int32_t read_encoder_value(TIM_TypeDef *TIM)
 {
 	uint16_t enc_buff = TIM->CNT;
 	TIM->CNT = 0;
@@ -90,19 +90,23 @@ int16_t read_encoder_value(TIM_TypeDef *TIM)
 void BNO055_Init(){
 	HAL_Delay(700);
 	uint8_t Txbuff;
-	//uint8_t Rxbuff;
+	uint8_t Rxbuff;
 	//char message[20];
 
 
 
-	//Txbuff = 0x20;
-	//HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
+	Txbuff = 0x20;
+	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
 
 	Txbuff = 0x00;
 	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3E, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //power mode
 
 	Txbuff = 0x0C;
 	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3D, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100);//using Nine Degree of Freedom mode
+
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
+	printf("error%d",Rxbuff);
 
 
 
@@ -157,6 +161,16 @@ int main(void)
   uint8_t Rxbuffer[6];
   float euler[3];
   char eulerheader[3][10] = {"x", "y", "z"};
+
+  HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
+	//printf(Rxbuff, "Error");
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x00, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
+	//printf(Rxbuff, "ID");
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x34, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
+	//printf(Rxbuffer, "Temp");
+	HAL_Delay(5000);
 
   /* USER CODE END 2 */
 
@@ -385,7 +399,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 999;
+  htim2.Init.Period = 65535;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
