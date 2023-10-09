@@ -67,7 +67,7 @@ static void MX_TIM17_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-
+void user_tim1_pwm_setvalue(int16_t value1, int16_t value2);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -172,6 +172,8 @@ int main(void)
 	//printf(Rxbuffer, "Temp");
 	HAL_Delay(5000);
 
+
+	user_tim1_pwm_setvalue(800, 800);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -189,6 +191,8 @@ int main(void)
 		  printf("%s:%f", eulerheader[i],euler[i]);
 
 	  }
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -352,8 +356,6 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  HAL_TIMEx_ConfigAsymmetricalDeadTime(&htim1, 5);
-  HAL_TIMEx_EnableAsymmetricalDeadTime(&htim1);
   sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
   sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
   sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
@@ -628,6 +630,43 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void user_tim1_pwm_setvalue(int16_t value1, int16_t value2)
+{
+	/*
+	value1 = (value1>1000)?1000:value1;
+	value2 = (value2>1000)?1000:value2;
+
+	value1 = (value1<-1000)?-1000:value1;
+	value2 = (value2<-1000)?-1000:value2;
+*/
+	value1 = value1 + 1000;
+	value2 = value2 + 1000;
+
+
+	TIM_OC_InitTypeDef sConfigOC;
+	sConfigOC.OCMode = TIM_OCMODE_ASSYMETRIC_PWM1;
+	sConfigOC.Pulse = value1;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
+
+	sConfigOC.OCMode = TIM_OCMODE_ASSYMETRIC_PWM1;
+	sConfigOC.Pulse = value2;
+	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
+	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+	HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
+	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
+}
+
 
 /* USER CODE END 4 */
 
