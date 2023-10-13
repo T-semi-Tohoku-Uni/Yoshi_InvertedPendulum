@@ -87,35 +87,7 @@ int32_t read_encoder_value(TIM_TypeDef *TIM)
 }
 
 
-void BNO055_Init(){
-	HAL_Delay(700);
-	uint8_t Txbuff;
-	uint8_t Rxbuff;
-	//char message[20];
-
-
-
-	Txbuff = 0x20;
-	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
-
-	Txbuff = 0x00;
-	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3E, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //power mode
-
-	Txbuff = 0x0C;
-	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3D, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100);//using Nine Degree of Freedom mode
-
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
-	printf("error%d",Rxbuff);
-
-
-
-
-	//print_int(30, "testing");
-	HAL_Delay(100);
-
-
-}
+void BNO055_Init(void);
 /* USER CODE END 0 */
 
 /**
@@ -161,6 +133,8 @@ int main(void)
   uint8_t Rxbuffer[6];
   float euler[3];
   char eulerheader[3][10] = {"x", "y", "z"};
+
+  BNO055_Init();
 
   HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
 	//printf(Rxbuff, "Error");
@@ -315,7 +289,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 1;
+  htim1.Init.Prescaler = 19;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 1999;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -630,6 +604,41 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void BNO055_Init(){
+	HAL_Delay(700);
+	uint8_t Txbuff;
+	uint8_t Rxbuff;
+	//char message[20];
+
+
+
+	//Txbuff = 0x20;
+	//HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
+
+	Txbuff = 0x00;
+	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3E, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //power mode
+
+	Txbuff = 0x0C;
+	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3D, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100);//using Nine Degree of Freedom mode
+
+
+
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x00, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
+
+	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x34, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
+
+
+	//print_int(30, "testing");
+	HAL_Delay(100);
+
+
+}
+
+
 void user_tim1_pwm_setvalue(int16_t value1, int16_t value2)
 {
 	/*
