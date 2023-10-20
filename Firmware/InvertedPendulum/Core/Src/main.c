@@ -32,7 +32,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define BNO_ADDRESS 0x28
 
 /* USER CODE END PD */
 
@@ -67,7 +66,7 @@ static void MX_TIM17_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-void user_tim1_pwm_setvalue(int16_t value1, int16_t value2);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -78,16 +77,13 @@ int _write(int file, char *ptr, int len)
 	return len;
 }
 
-
-int32_t read_encoder_value(TIM_TypeDef *TIM)
+int16_t read_encoder_value(TIM_TypeDef TIM)
 {
 	uint16_t enc_buff = TIM->CNT;
 	TIM->CNT = 0;
 	return (int16_t)enc_buff;
 }
 
-
-void BNO055_Init(void);
 /* USER CODE END 0 */
 
 /**
@@ -127,46 +123,12 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
-  HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
-
-  uint8_t Rxbuffer[6];
-  float euler[3];
-  char eulerheader[3][10] = {"x", "y", "z"};
-
-  BNO055_Init();
-
-  HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
-	//printf(Rxbuff, "Error");
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x00, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
-	//printf(Rxbuff, "ID");
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x34, I2C_MEMADD_SIZE_8BIT, &Rxbuffer, 1, 100);
-	//printf(Rxbuffer, "Temp");
-	HAL_Delay(5000);
-
-
-	user_tim1_pwm_setvalue(800, 800);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  printf("Right:%d\r\n",read_encoder_value(TIM2));
-	  printf("Left :%d\r\n",read_encoder_value(TIM3));
-	  HAL_Delay(200);
-
-	  HAL_I2C_Mem_Read(&hi2c1, BNO_ADDRESS << 1, 0x1A, I2C_MEMADD_SIZE_8BIT, Rxbuffer, 6, 100);
-
-	  for(uint8_t i=0; i<3; i++){
-		  euler[i] = (float)((Rxbuffer[i*2+1] << 8) | Rxbuffer[i*2])/16;
-		  printf("%s:%f", eulerheader[i],euler[i]);
-
-	  }
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -289,7 +251,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 19;
+  htim1.Init.Prescaler = 1;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 1999;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -330,6 +292,8 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  HAL_TIMEx_ConfigAsymmetricalDeadTime(&htim1, 5);
+  HAL_TIMEx_EnableAsymmetricalDeadTime(&htim1);
   sBreakDeadTimeConfig.OffStateRunMode = TIM_OSSR_DISABLE;
   sBreakDeadTimeConfig.OffStateIDLEMode = TIM_OSSI_DISABLE;
   sBreakDeadTimeConfig.LockLevel = TIM_LOCKLEVEL_OFF;
@@ -373,9 +337,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 0;
+  htim2.Init.Prescaler = 79;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 65535;
+  htim2.Init.Period = 999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
@@ -604,78 +568,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-void BNO055_Init(){
-	HAL_Delay(700);
-	uint8_t Txbuff;
-	uint8_t Rxbuff;
-	//char message[20];
-
-
-
-	//Txbuff = 0x20;
-	//HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3F, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //system trigger
-
-	Txbuff = 0x00;
-	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3E, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100); //power mode
-
-	Txbuff = 0x0C;
-	HAL_I2C_Mem_Write(&hi2c1, 0x28 << 1, 0x3D, I2C_MEMADD_SIZE_8BIT, &Txbuff, 1, 100);//using Nine Degree of Freedom mode
-
-
-
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x3A, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x00, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
-
-	HAL_I2C_Mem_Read(&hi2c1, 0x28 << 1, 0x34, I2C_MEMADD_SIZE_8BIT, &Rxbuff, 1, 100);
-
-
-	//print_int(30, "testing");
-	HAL_Delay(100);
-
-
-}
-
-
-void user_tim1_pwm_setvalue(int16_t value1, int16_t value2)
-{
-	/*
-	value1 = (value1>1000)?1000:value1;
-	value2 = (value2>1000)?1000:value2;
-
-	value1 = (value1<-1000)?-1000:value1;
-	value2 = (value2<-1000)?-1000:value2;
-*/
-	value1 = value1 + 1000;
-	value2 = value2 + 1000;
-
-
-	TIM_OC_InitTypeDef sConfigOC;
-	sConfigOC.OCMode = TIM_OCMODE_ASSYMETRIC_PWM1;
-	sConfigOC.Pulse = value1;
-	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
-	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
-	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_1);
-
-	sConfigOC.OCMode = TIM_OCMODE_ASSYMETRIC_PWM1;
-	sConfigOC.Pulse = value2;
-	sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-	sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
-	sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-	sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
-	sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-	HAL_TIM_PWM_ConfigChannel(&htim1, &sConfigOC, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
-	HAL_TIMEx_PWMN_Start(&htim1, TIM_CHANNEL_2);
-}
-
 
 /* USER CODE END 4 */
 
