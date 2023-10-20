@@ -147,7 +147,7 @@ int main(void)
 	HAL_Delay(5000);
 
 
-	user_tim1_pwm_setvalue(800, 800);
+	user_tim1_pwm_setvalue(-800, -800);
   /* USER CODE END 2 */
 
   /* Infinite loop */

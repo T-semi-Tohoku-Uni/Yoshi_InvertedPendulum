@@ -1311,17 +1311,17 @@ int main(void)
 
   HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
  8000f6e:	213c      	movs	r1, #60	; 0x3c
- 8000f70:	4855      	ldr	r0, [pc, #340]	; (80010c8 <main+0x188>)
+ 8000f70:	4854      	ldr	r0, [pc, #336]	; (80010c4 <main+0x184>)
  8000f72:	f003 faff 	bl	8004574 <HAL_TIM_Encoder_Start>
   HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
  8000f76:	213c      	movs	r1, #60	; 0x3c
- 8000f78:	4854      	ldr	r0, [pc, #336]	; (80010cc <main+0x18c>)
+ 8000f78:	4853      	ldr	r0, [pc, #332]	; (80010c8 <main+0x188>)
  8000f7a:	f003 fafb 	bl	8004574 <HAL_TIM_Encoder_Start>
 
   uint8_t Rxbuffer[6];
   float euler[3];
   char eulerheader[3][10] = {"x", "y", "z"};
- 8000f7e:	4b54      	ldr	r3, [pc, #336]	; (80010d0 <main+0x190>)
+ 8000f7e:	4b53      	ldr	r3, [pc, #332]	; (80010cc <main+0x18c>)
  8000f80:	1d3c      	adds	r4, r7, #4
  8000f82:	461d      	mov	r5, r3
  8000f84:	cd0f      	ldmia	r5!, {r0, r1, r2, r3}
@@ -1343,7 +1343,7 @@ int main(void)
  8000fa2:	2301      	movs	r3, #1
  8000fa4:	223a      	movs	r2, #58	; 0x3a
  8000fa6:	2150      	movs	r1, #80	; 0x50
- 8000fa8:	484a      	ldr	r0, [pc, #296]	; (80010d4 <main+0x194>)
+ 8000fa8:	4849      	ldr	r0, [pc, #292]	; (80010d0 <main+0x190>)
  8000faa:	f001 fc65 	bl	8002878 <HAL_I2C_Mem_Read>
 	//printf(Rxbuff, "Error");
 
@@ -1357,7 +1357,7 @@ int main(void)
  8000fbc:	2301      	movs	r3, #1
  8000fbe:	2200      	movs	r2, #0
  8000fc0:	2150      	movs	r1, #80	; 0x50
- 8000fc2:	4844      	ldr	r0, [pc, #272]	; (80010d4 <main+0x194>)
+ 8000fc2:	4843      	ldr	r0, [pc, #268]	; (80010d0 <main+0x190>)
  8000fc4:	f001 fc58 	bl	8002878 <HAL_I2C_Mem_Read>
 	//printf(Rxbuff, "ID");
 
@@ -1371,7 +1371,7 @@ int main(void)
  8000fd6:	2301      	movs	r3, #1
  8000fd8:	2234      	movs	r2, #52	; 0x34
  8000fda:	2150      	movs	r1, #80	; 0x50
- 8000fdc:	483d      	ldr	r0, [pc, #244]	; (80010d4 <main+0x194>)
+ 8000fdc:	483c      	ldr	r0, [pc, #240]	; (80010d0 <main+0x190>)
  8000fde:	f001 fc4b 	bl	8002878 <HAL_I2C_Mem_Read>
 	//printf(Rxbuffer, "Temp");
 	HAL_Delay(5000);
@@ -1379,109 +1379,110 @@ int main(void)
  8000fe6:	f000 ffb5 	bl	8001f54 <HAL_Delay>
 
 
-	user_tim1_pwm_setvalue(800, 800);
- 8000fea:	f44f 7148 	mov.w	r1, #800	; 0x320
- 8000fee:	f44f 7048 	mov.w	r0, #800	; 0x320
- 8000ff2:	f000 fbad 	bl	8001750 <user_tim1_pwm_setvalue>
+	user_tim1_pwm_setvalue(-800, -800);
+ 8000fea:	493a      	ldr	r1, [pc, #232]	; (80010d4 <main+0x194>)
+ 8000fec:	4839      	ldr	r0, [pc, #228]	; (80010d4 <main+0x194>)
+ 8000fee:	f000 fbaf 	bl	8001750 <user_tim1_pwm_setvalue>
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 	  printf("Right:%d\r\n",read_encoder_value(TIM2));
- 8000ff6:	f04f 4080 	mov.w	r0, #1073741824	; 0x40000000
- 8000ffa:	f7ff ff8f 	bl	8000f1c <read_encoder_value>
- 8000ffe:	4603      	mov	r3, r0
- 8001000:	4619      	mov	r1, r3
- 8001002:	4835      	ldr	r0, [pc, #212]	; (80010d8 <main+0x198>)
- 8001004:	f006 f920 	bl	8007248 <iprintf>
+ 8000ff2:	f04f 4080 	mov.w	r0, #1073741824	; 0x40000000
+ 8000ff6:	f7ff ff91 	bl	8000f1c <read_encoder_value>
+ 8000ffa:	4603      	mov	r3, r0
+ 8000ffc:	4619      	mov	r1, r3
+ 8000ffe:	4836      	ldr	r0, [pc, #216]	; (80010d8 <main+0x198>)
+ 8001000:	f006 f922 	bl	8007248 <iprintf>
 	  printf("Left :%d\r\n",read_encoder_value(TIM3));
- 8001008:	4834      	ldr	r0, [pc, #208]	; (80010dc <main+0x19c>)
- 800100a:	f7ff ff87 	bl	8000f1c <read_encoder_value>
- 800100e:	4603      	mov	r3, r0
- 8001010:	4619      	mov	r1, r3
- 8001012:	4833      	ldr	r0, [pc, #204]	; (80010e0 <main+0x1a0>)
- 8001014:	f006 f918 	bl	8007248 <iprintf>
+ 8001004:	4835      	ldr	r0, [pc, #212]	; (80010dc <main+0x19c>)
+ 8001006:	f7ff ff89 	bl	8000f1c <read_encoder_value>
+ 800100a:	4603      	mov	r3, r0
+ 800100c:	4619      	mov	r1, r3
+ 800100e:	4834      	ldr	r0, [pc, #208]	; (80010e0 <main+0x1a0>)
+ 8001010:	f006 f91a 	bl	8007248 <iprintf>
 	  HAL_Delay(200);
- 8001018:	20c8      	movs	r0, #200	; 0xc8
- 800101a:	f000 ff9b 	bl	8001f54 <HAL_Delay>
+ 8001014:	20c8      	movs	r0, #200	; 0xc8
+ 8001016:	f000 ff9d 	bl	8001f54 <HAL_Delay>
 
 	  HAL_I2C_Mem_Read(&hi2c1, BNO_ADDRESS << 1, 0x1A, I2C_MEMADD_SIZE_8BIT, Rxbuffer, 6, 100);
- 800101e:	2364      	movs	r3, #100	; 0x64
- 8001020:	9302      	str	r3, [sp, #8]
- 8001022:	2306      	movs	r3, #6
- 8001024:	9301      	str	r3, [sp, #4]
- 8001026:	f107 0330 	add.w	r3, r7, #48	; 0x30
- 800102a:	9300      	str	r3, [sp, #0]
- 800102c:	2301      	movs	r3, #1
- 800102e:	221a      	movs	r2, #26
- 8001030:	2150      	movs	r1, #80	; 0x50
- 8001032:	4828      	ldr	r0, [pc, #160]	; (80010d4 <main+0x194>)
- 8001034:	f001 fc20 	bl	8002878 <HAL_I2C_Mem_Read>
+ 800101a:	2364      	movs	r3, #100	; 0x64
+ 800101c:	9302      	str	r3, [sp, #8]
+ 800101e:	2306      	movs	r3, #6
+ 8001020:	9301      	str	r3, [sp, #4]
+ 8001022:	f107 0330 	add.w	r3, r7, #48	; 0x30
+ 8001026:	9300      	str	r3, [sp, #0]
+ 8001028:	2301      	movs	r3, #1
+ 800102a:	221a      	movs	r2, #26
+ 800102c:	2150      	movs	r1, #80	; 0x50
+ 800102e:	4828      	ldr	r0, [pc, #160]	; (80010d0 <main+0x190>)
+ 8001030:	f001 fc22 	bl	8002878 <HAL_I2C_Mem_Read>
 
 	  for(uint8_t i=0; i<3; i++){
- 8001038:	2300      	movs	r3, #0
- 800103a:	f887 3037 	strb.w	r3, [r7, #55]	; 0x37
- 800103e:	e03d      	b.n	80010bc <main+0x17c>
+ 8001034:	2300      	movs	r3, #0
+ 8001036:	f887 3037 	strb.w	r3, [r7, #55]	; 0x37
+ 800103a:	e03d      	b.n	80010b8 <main+0x178>
 		  euler[i] = (float)((Rxbuffer[i*2+1] << 8) | Rxbuffer[i*2])/16;
- 8001040:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
- 8001044:	005b      	lsls	r3, r3, #1
- 8001046:	3301      	adds	r3, #1
- 8001048:	3338      	adds	r3, #56	; 0x38
- 800104a:	443b      	add	r3, r7
- 800104c:	f813 3c08 	ldrb.w	r3, [r3, #-8]
- 8001050:	021b      	lsls	r3, r3, #8
- 8001052:	f897 2037 	ldrb.w	r2, [r7, #55]	; 0x37
- 8001056:	0052      	lsls	r2, r2, #1
- 8001058:	3238      	adds	r2, #56	; 0x38
- 800105a:	443a      	add	r2, r7
- 800105c:	f812 2c08 	ldrb.w	r2, [r2, #-8]
- 8001060:	4313      	orrs	r3, r2
- 8001062:	ee07 3a90 	vmov	s15, r3
- 8001066:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
- 800106a:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
- 800106e:	eef3 6a00 	vmov.f32	s13, #48	; 0x41800000  16.0
- 8001072:	eec7 7a26 	vdiv.f32	s15, s14, s13
- 8001076:	009b      	lsls	r3, r3, #2
- 8001078:	3338      	adds	r3, #56	; 0x38
- 800107a:	443b      	add	r3, r7
- 800107c:	3b14      	subs	r3, #20
- 800107e:	edc3 7a00 	vstr	s15, [r3]
+ 800103c:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
+ 8001040:	005b      	lsls	r3, r3, #1
+ 8001042:	3301      	adds	r3, #1
+ 8001044:	3338      	adds	r3, #56	; 0x38
+ 8001046:	443b      	add	r3, r7
+ 8001048:	f813 3c08 	ldrb.w	r3, [r3, #-8]
+ 800104c:	021b      	lsls	r3, r3, #8
+ 800104e:	f897 2037 	ldrb.w	r2, [r7, #55]	; 0x37
+ 8001052:	0052      	lsls	r2, r2, #1
+ 8001054:	3238      	adds	r2, #56	; 0x38
+ 8001056:	443a      	add	r2, r7
+ 8001058:	f812 2c08 	ldrb.w	r2, [r2, #-8]
+ 800105c:	4313      	orrs	r3, r2
+ 800105e:	ee07 3a90 	vmov	s15, r3
+ 8001062:	eeb8 7ae7 	vcvt.f32.s32	s14, s15
+ 8001066:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
+ 800106a:	eef3 6a00 	vmov.f32	s13, #48	; 0x41800000  16.0
+ 800106e:	eec7 7a26 	vdiv.f32	s15, s14, s13
+ 8001072:	009b      	lsls	r3, r3, #2
+ 8001074:	3338      	adds	r3, #56	; 0x38
+ 8001076:	443b      	add	r3, r7
+ 8001078:	3b14      	subs	r3, #20
+ 800107a:	edc3 7a00 	vstr	s15, [r3]
 		  printf("%s:%f", eulerheader[i],euler[i]);
- 8001082:	f897 2037 	ldrb.w	r2, [r7, #55]	; 0x37
- 8001086:	1d39      	adds	r1, r7, #4
- 8001088:	4613      	mov	r3, r2
- 800108a:	009b      	lsls	r3, r3, #2
- 800108c:	4413      	add	r3, r2
- 800108e:	005b      	lsls	r3, r3, #1
- 8001090:	18cc      	adds	r4, r1, r3
- 8001092:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
- 8001096:	009b      	lsls	r3, r3, #2
- 8001098:	3338      	adds	r3, #56	; 0x38
- 800109a:	443b      	add	r3, r7
- 800109c:	3b14      	subs	r3, #20
- 800109e:	681b      	ldr	r3, [r3, #0]
- 80010a0:	4618      	mov	r0, r3
- 80010a2:	f7ff fa79 	bl	8000598 <__aeabi_f2d>
- 80010a6:	4602      	mov	r2, r0
- 80010a8:	460b      	mov	r3, r1
- 80010aa:	4621      	mov	r1, r4
- 80010ac:	480d      	ldr	r0, [pc, #52]	; (80010e4 <main+0x1a4>)
- 80010ae:	f006 f8cb 	bl	8007248 <iprintf>
+ 800107e:	f897 2037 	ldrb.w	r2, [r7, #55]	; 0x37
+ 8001082:	1d39      	adds	r1, r7, #4
+ 8001084:	4613      	mov	r3, r2
+ 8001086:	009b      	lsls	r3, r3, #2
+ 8001088:	4413      	add	r3, r2
+ 800108a:	005b      	lsls	r3, r3, #1
+ 800108c:	18cc      	adds	r4, r1, r3
+ 800108e:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
+ 8001092:	009b      	lsls	r3, r3, #2
+ 8001094:	3338      	adds	r3, #56	; 0x38
+ 8001096:	443b      	add	r3, r7
+ 8001098:	3b14      	subs	r3, #20
+ 800109a:	681b      	ldr	r3, [r3, #0]
+ 800109c:	4618      	mov	r0, r3
+ 800109e:	f7ff fa7b 	bl	8000598 <__aeabi_f2d>
+ 80010a2:	4602      	mov	r2, r0
+ 80010a4:	460b      	mov	r3, r1
+ 80010a6:	4621      	mov	r1, r4
+ 80010a8:	480e      	ldr	r0, [pc, #56]	; (80010e4 <main+0x1a4>)
+ 80010aa:	f006 f8cd 	bl	8007248 <iprintf>
 	  for(uint8_t i=0; i<3; i++){
- 80010b2:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
- 80010b6:	3301      	adds	r3, #1
- 80010b8:	f887 3037 	strb.w	r3, [r7, #55]	; 0x37
- 80010bc:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
- 80010c0:	2b02      	cmp	r3, #2
- 80010c2:	d9bd      	bls.n	8001040 <main+0x100>
+ 80010ae:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
+ 80010b2:	3301      	adds	r3, #1
+ 80010b4:	f887 3037 	strb.w	r3, [r7, #55]	; 0x37
+ 80010b8:	f897 3037 	ldrb.w	r3, [r7, #55]	; 0x37
+ 80010bc:	2b02      	cmp	r3, #2
+ 80010be:	d9bd      	bls.n	800103c <main+0xfc>
 	  printf("Right:%d\r\n",read_encoder_value(TIM2));
- 80010c4:	e797      	b.n	8000ff6 <main+0xb6>
- 80010c6:	bf00      	nop
- 80010c8:	20000288 	.word	0x20000288
- 80010cc:	200002d4 	.word	0x200002d4
- 80010d0:	080091d8 	.word	0x080091d8
- 80010d4:	200001f0 	.word	0x200001f0
+ 80010c0:	e797      	b.n	8000ff2 <main+0xb2>
+ 80010c2:	bf00      	nop
+ 80010c4:	20000288 	.word	0x20000288
+ 80010c8:	200002d4 	.word	0x200002d4
+ 80010cc:	080091d8 	.word	0x080091d8
+ 80010d0:	200001f0 	.word	0x200001f0
+ 80010d4:	fffffce0 	.word	0xfffffce0
  80010d8:	080091b8 	.word	0x080091b8
  80010dc:	40000400 	.word	0x40000400
  80010e0:	080091c4 	.word	0x080091c4
