@@ -22,7 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-#include <usrPID.h>
+#include "usrPID.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,6 +53,7 @@ TIM_HandleTypeDef htim17;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+uint8_t Rxbuffer[6];
 
 /* USER CODE END PV */
 
@@ -67,7 +68,7 @@ static void MX_TIM17_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
-void user_tim1_pwm_setvalue(int16_t value1, int16_t value2);
+void usr_tim1_pwm_setvalue(int16_t value1, int16_t value2);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -130,7 +131,7 @@ int main(void)
   HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
   HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 
-  uint8_t Rxbuffer[6];
+
   float euler[3];
   char eulerheader[3][10] = {"x", "y", "z"};
 
@@ -154,6 +155,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*
 	  printf("Right:%d\r\n",read_encoder_value(TIM2));
 	  printf("Left :%d\r\n",read_encoder_value(TIM3));
 	  HAL_Delay(200);
@@ -164,7 +166,7 @@ int main(void)
 		  euler[i] = (float)((Rxbuffer[i*2+1] << 8) | Rxbuffer[i*2])/16;
 		  printf("%s:%f", eulerheader[i],euler[i]);
 
-	  }
+	  }*/
 
 
     /* USER CODE END WHILE */
@@ -638,8 +640,14 @@ void BNO055_Init(){
 
 }
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(GPIO_Pin == GPIO_PIN_7){
+		HAL_I2C_Mem_Read(&hi2c1, BNO_ADDRESS << 1, 0x1A, I2C_MEMADD_SIZE_8BIT, Rxbuffer, 6, 100);
+	}
 
-void user_tim1_pwm_setvalue(int16_t value1, int16_t value2)
+}
+
+void usr_tim1_pwm_setvalue(int16_t value1, int16_t value2)
 {
 	/*
 	value1 = (value1>1000)?1000:value1;

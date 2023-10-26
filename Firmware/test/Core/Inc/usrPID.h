@@ -5,8 +5,8 @@
  *      Author: Yoshi
  */
 
-#ifndef SRC_PID_H_
-#define SRC_PID_H_
+#ifndef SRC_usrPID_H_
+#define SRC_usrPID_H_
 
 
 typedef struct
@@ -32,4 +32,4 @@ float PID_Control(PID_ValueTypeDef *value, PID_ParamTypeDef *param);
 void  PID_Reset(PID_ValueTypeDef *value);
 
 
-#endif /* SRC_PID_H_ */
+#endif /* SRC_usrPID_H_ */
